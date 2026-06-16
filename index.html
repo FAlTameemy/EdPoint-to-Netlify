@@ -1,800 +1,152 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EdPoint - Personalized Education Services</title>
-    <meta name="description" content="Personalized online tutoring designed for your goals. Build confidence with EdPoint.">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Plus Jakarta Sans & Cairo (Arabic) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        arabic: ['"Cairo"', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb', // Primary Blue
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        },
-                        accent: {
-                            400: '#fbbf24', // Warm Yellow
-                            500: '#f59e0b',
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Custom Utilities */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .text-gradient {
-            background: linear-gradient(to right, #2563eb, #1d4ed8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="A simple income and expense tracker with USD and Saudi Riyal support.">
+  <title>MoneyTrack</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="font-sans text-gray-800 antialiased bg-gray-50">
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Personal ledger</p>
+      <h1>MoneyTrack</h1>
+    </div>
+    <button class="icon-button" id="install-button" type="button" hidden aria-label="Install app" title="Install app">
+      <span aria-hidden="true">+</span>
+    </button>
+  </header>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <span class="font-bold text-xl tracking-tight text-gray-900" data-i18n="logo">EdPoint</span>
-                </div>
-
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
-                    <a href="#services" class="text-gray-600 hover:text-brand-600 font-medium transition-colors" data-i18n="nav_services">Services</a>
-                    <a href="#about" class="text-gray-600 hover:text-brand-600 font-medium transition-colors" data-i18n="nav_about">About</a>
-                    <a href="#methodology" class="text-gray-600 hover:text-brand-600 font-medium transition-colors" data-i18n="nav_methodology">Methodology</a>
-                    <a href="#testimonials" class="text-gray-600 hover:text-brand-600 font-medium transition-colors" data-i18n="nav_stories">Stories</a>
-                </div>
-
-                <!-- CTA Button & Lang Switch -->
-                <div class="hidden md:flex items-center gap-4">
-                    <button onclick="toggleLanguage()" class="text-gray-600 hover:text-brand-600 font-bold text-sm flex items-center gap-1">
-                        <i class="fa-solid fa-globe"></i> <span id="lang-label">العربية</span>
-                    </button>
-                    <a href="#contact" class="bg-gray-900 hover:bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold transition-colors duration-300 text-sm shadow-lg hover:shadow-xl" data-i18n="nav_book">
-                        Book a Free Trial
-                    </a>
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center gap-4">
-                     <button onclick="toggleLanguage()" class="text-gray-600 hover:text-brand-600 font-bold text-sm">
-                        <span id="lang-label-mobile">AR</span>
-                    </button>
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
+  <main class="app-shell">
+    <section class="summary-panel" aria-label="Account summary">
+      <div class="summary-top">
+        <div>
+          <p class="muted">Balance</p>
+          <strong id="balance-total">$0.00</strong>
         </div>
+        <label class="select-label">
+          Display
+          <select id="display-currency">
+            <option value="USD">USD</option>
+            <option value="SAR">SR</option>
+          </select>
+        </label>
+      </div>
 
-        <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="#services" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50" data-i18n="nav_services">Services</a>
-                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50" data-i18n="nav_about">About</a>
-                <a href="#methodology" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50" data-i18n="nav_methodology">Methodology</a>
-                <a href="#testimonials" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50" data-i18n="nav_stories">Stories</a>
-                <a href="#contact" class="block mt-4 text-center bg-brand-600 text-white px-3 py-3 rounded-lg font-bold" data-i18n="nav_book">Book Free Trial</a>
-            </div>
+      <div class="summary-grid">
+        <div>
+          <span>Income</span>
+          <strong id="income-total">$0.00</strong>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden relative">
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-            <div class="absolute top-[-10%] right-[-5%] rtl:right-auto rtl:left-[-5%] w-96 h-96 bg-brand-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
-            <div class="absolute bottom-[-10%] left-[-10%] rtl:left-auto rtl:right-[-10%] w-96 h-96 bg-accent-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float" style="animation-delay: 2s"></div>
+        <div>
+          <span>Expenses</span>
+          <strong id="expense-total">$0.00</strong>
         </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Text Content -->
-                <div class="space-y-8 text-center lg:text-start">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span data-i18n="hero_badge">Accepting new students for Fall 2025</span>
-                    </div>
-                    
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                        <span data-i18n="hero_title_1">Education Services</span> <span class="text-brand-600" data-i18n="hero_title_2">You Trust.</span>
-                    </h1>
-                    
-                    <p class="text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-i18n="hero_desc">
-                        Personalized online education designed for your goals. From exam prep to fluency, we make learning stick.
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-gray-900 text-white rounded-xl font-bold hover:bg-brand-600 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 text-center" data-i18n="hero_cta">
-                            Start Free Trial
-                        </a>
-                        <a href="#services" class="w-full sm:w-auto px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-all text-center flex items-center justify-center gap-2">
-                            <i class="fa-regular fa-circle-play"></i> <span data-i18n="hero_video">Watch Video</span>
-                        </a>
-                    </div>
-
-                    <!-- Trust Indicators -->
-                    <div class="pt-6 flex items-center justify-center lg:justify-start gap-4 text-sm font-medium text-gray-500">
-                        <div class="flex -space-x-3 rtl:space-x-reverse">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64" alt="Student">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64" alt="Student">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64" alt="Student">
-                            <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs text-gray-600 font-bold">+500</div>
-                        </div>
-                        <div class="flex flex-col text-start">
-                            <div class="flex text-yellow-400 text-xs">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <span data-i18n="hero_trusted">Trusted by 500+ students</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hero Image Grid -->
-                <div class="relative">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-4 translate-y-8">
-                            <div class="bg-white p-4 rounded-2xl shadow-lg animate-float" style="animation-delay: 1s">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                        <i class="fa-solid fa-check"></i>
-                                    </div>
-                                    <span class="font-bold text-sm" data-i18n="card_target">Target Reached!</span>
-                                </div>
-                                <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-green-500 w-[92%]"></div>
-                                </div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" alt="Students learning" class="rounded-2xl shadow-xl w-full h-64 object-cover">
-                        </div>
-                        <div class="space-y-4">
-                            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" alt="Tutor teaching" class="rounded-2xl shadow-xl w-full h-64 object-cover">
-                            <div class="bg-gray-900 text-white p-6 rounded-2xl shadow-lg">
-                                <div class="text-3xl font-bold text-accent-500 mb-1">4.9/5</div>
-                                <div class="text-sm text-gray-300" data-i18n="card_rating">Average student rating</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+          <span>This month</span>
+          <strong id="month-total">$0.00</strong>
         </div>
+      </div>
+      <p class="rate-note">Conversion rate: $1 = 3.75 SR</p>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-sm font-bold tracking-wide text-brand-600 uppercase mb-2" data-i18n="serv_pre">Our Programs</h2>
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-900" data-i18n="serv_title">Tailored Lessons for Every Learner</h3>
-            </div>
+    <section class="entry-panel" aria-labelledby="entry-title">
+      <div class="section-title">
+        <h2 id="entry-title">Add transaction</h2>
+        <button class="ghost-button" id="clear-form" type="button">Clear</button>
+      </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Service Card 1 -->
-                <div class="group rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 card-hover cursor-pointer">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Conversational" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors" data-i18n="s1_title">Conversational English</h4>
-                        <p class="text-gray-600 leading-relaxed mb-4" data-i18n="s1_desc">Live conversation practice focused on natural speaking, slang, and cultural nuances.</p>
-                        <span class="inline-flex items-center text-sm font-bold text-brand-600"><span data-i18n="learn_more">Learn more</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Service Card 2 -->
-                <div class="group rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 card-hover cursor-pointer">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Business" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors" data-i18n="s2_title">Business Professional</h4>
-                        <p class="text-gray-600 leading-relaxed mb-4" data-i18n="s2_desc">Master presentations, negotiations, and formal email writing for the workplace.</p>
-                        <span class="inline-flex items-center text-sm font-bold text-brand-600"><span data-i18n="learn_more">Learn more</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Service Card 3 -->
-                <div class="group rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 card-hover cursor-pointer">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Exam Prep" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors" data-i18n="s3_title">IELTS & SAT Prep</h4>
-                        <p class="text-gray-600 leading-relaxed mb-4" data-i18n="s3_desc">Rigorous test strategies, practice exams, and time management drills.</p>
-                        <span class="inline-flex items-center text-sm font-bold text-brand-600"><span data-i18n="learn_more">Learn more</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Service Card 4 -->
-                <div class="group rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 card-hover cursor-pointer">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Kids" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors" data-i18n="s4_title">K-12 Tutoring</h4>
-                        <p class="text-gray-600 leading-relaxed mb-4" data-i18n="s4_desc">Engaging math, science, and reading support for younger students.</p>
-                        <span class="inline-flex items-center text-sm font-bold text-brand-600"><span data-i18n="learn_more">Learn more</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Service Card 5 -->
-                <div class="group rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 card-hover cursor-pointer">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="Writing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors" data-i18n="s5_title">Academic Writing</h4>
-                        <p class="text-gray-600 leading-relaxed mb-4" data-i18n="s5_desc">Structured essay planning, research methods, and citation guides.</p>
-                        <span class="inline-flex items-center text-sm font-bold text-brand-600"><span data-i18n="learn_more">Learn more</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Service Card 6 -->
-                <div class="group rounded-3xl overflow-hidden bg-brand-600 border border-brand-600 card-hover cursor-pointer text-white flex flex-col justify-center items-center text-center p-8">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6 text-2xl">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold mb-3" data-i18n="s6_title">Custom Plan</h4>
-                    <p class="text-brand-100 leading-relaxed mb-6" data-i18n="s6_desc">Don't see what you need? We'll build a curriculum just for you.</p>
-                    <a href="#contact" class="px-6 py-3 bg-white text-brand-600 rounded-full font-bold hover:bg-gray-100 transition-colors" data-i18n="s6_btn">Contact Us</a>
-                </div>
-            </div>
+      <form id="transaction-form">
+        <div class="segmented" role="radiogroup" aria-label="Transaction type">
+          <label>
+            <input type="radio" name="type" value="income" checked>
+            <span>Income</span>
+          </label>
+          <label>
+            <input type="radio" name="type" value="expense">
+            <span>Expense</span>
+          </label>
         </div>
+
+        <div class="form-grid">
+          <label>
+            Amount
+            <input id="amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required>
+          </label>
+          <label>
+            Currency
+            <select id="currency">
+              <option value="USD">USD</option>
+              <option value="SAR">SR</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select id="category" required></select>
+          </label>
+          <label>
+            Date
+            <input id="date" type="date" required>
+          </label>
+        </div>
+
+        <label>
+          Note
+          <input id="note" type="text" maxlength="80" placeholder="Salary, groceries, coffee...">
+        </label>
+
+        <button class="primary-button" type="submit">Save transaction</button>
+      </form>
     </section>
 
-    <!-- Methodology / Why Choose Us -->
-    <section id="methodology" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Left: Content -->
-                <div>
-                    <h2 class="text-sm font-bold tracking-wide text-brand-600 uppercase mb-2" data-i18n="meth_pre">Why Choose EdPoint</h2>
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6" data-i18n="meth_title">What Makes Our Tutoring Stand Out</h3>
-                    <p class="text-gray-600 text-lg mb-10" data-i18n="meth_desc">We don't just teach subjects; we teach you how to learn. Our methodology is built on three core pillars: confidence, practicality, and personalization.</p>
-                    
-                    <div class="space-y-8">
-                        <!-- Feature 1 -->
-                        <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-brand-600 text-xl">
-                                <i class="fa-solid fa-user-graduate"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-900 mb-2" data-i18n="feat1_title">Student-Centered Approach</h4>
-                                <p class="text-gray-600" data-i18n="feat1_desc">Lessons are carefully tailored to meet your individual pace, interests, and learning style.</p>
-                            </div>
-                        </div>
-
-                        <!-- Feature 2 -->
-                        <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-xl">
-                                <i class="fa-solid fa-comments"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-900 mb-2" data-i18n="feat2_title">Active Recall & Practice</h4>
-                                <p class="text-gray-600" data-i18n="feat2_desc">We focus on speaking and doing, not just passive listening. Use what you learn immediately.</p>
-                            </div>
-                        </div>
-
-                        <!-- Feature 3 -->
-                        <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-xl">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-900 mb-2" data-i18n="feat3_title">Measurable Progress</h4>
-                                <p class="text-gray-600" data-i18n="feat3_desc">Track your improvement with monthly reports and milestone check-ins.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: Stats Grid -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-4">
-                        <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                            <div class="text-4xl font-extrabold text-brand-600 mb-2">8+</div>
-                            <div class="text-gray-500 font-medium" data-i18n="stat_exp">Years Experience</div>
-                        </div>
-                        <div class="bg-gray-900 p-8 rounded-3xl shadow-sm text-center text-white">
-                            <div class="text-4xl font-extrabold text-accent-500 mb-2">10k+</div>
-                            <div class="text-gray-300 font-medium" data-i18n="stat_lessons">Lessons Taught</div>
-                        </div>
-                    </div>
-                    <div class="space-y-4 translate-y-8">
-                        <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                            <div class="text-4xl font-extrabold text-green-500 mb-2">100%</div>
-                            <div class="text-gray-500 font-medium" data-i18n="stat_goal">Goal Completion</div>
-                        </div>
-                        <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                            <div class="text-4xl font-extrabold text-purple-600 mb-2">24/7</div>
-                            <div class="text-gray-500 font-medium" data-i18n="stat_access">Resource Access</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="reports-panel" aria-labelledby="reports-title">
+      <div class="section-title">
+        <h2 id="reports-title">Reports</h2>
+        <div class="toolbar">
+          <select id="report-range" aria-label="Report range">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+          </select>
+          <button class="ghost-button" id="export-csv" type="button">CSV</button>
         </div>
+      </div>
+
+      <div class="report-metrics">
+        <div>
+          <span>Income</span>
+          <strong id="report-income">$0.00</strong>
+        </div>
+        <div>
+          <span>Expenses</span>
+          <strong id="report-expense">$0.00</strong>
+        </div>
+        <div>
+          <span>Net</span>
+          <strong id="report-net">$0.00</strong>
+        </div>
+      </div>
+
+      <div class="chart-wrap" aria-label="Expense by category">
+        <div id="category-bars"></div>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gray-900 rounded-[3rem] overflow-hidden shadow-2xl">
-                <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <div class="relative h-96 lg:h-auto">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="Head Tutor" class="absolute inset-0 w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent lg:hidden"></div>
-                    </div>
-                    <div class="p-10 md:p-16 lg:p-20 flex flex-col justify-center">
-                        <div class="inline-block px-4 py-1.5 rounded-full bg-brand-900 text-brand-300 font-semibold text-sm mb-6 w-fit" data-i18n="bio_badge">Meet Your Head Tutor</div>
-                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="bio_name">Hi, I'm Sarah Jenkins.</h3>
-                        <p class="text-gray-300 text-lg leading-relaxed mb-8" data-i18n="bio_desc">
-                            I founded EdPoint with a simple mission: to make high-quality education accessible and engaging. With a Master's in Education and over a decade of teaching experience, I've helped students from 30+ countries achieve their academic dreams.
-                        </p>
-                        <div class="flex flex-wrap gap-6 mb-8">
-                            <!-- Cert Badges -->
-                            <div class="flex items-center gap-2 text-white/80">
-                                <i class="fa-solid fa-certificate text-accent-500"></i>
-                                <span data-i18n="bio_cert1">TEFL Certified</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/80">
-                                <i class="fa-solid fa-graduation-cap text-accent-500"></i>
-                                <span data-i18n="bio_cert2">M.Ed. Harvard</span>
-                            </div>
-                        </div>
-                        <a href="#contact" class="inline-flex items-center text-white font-bold hover:text-accent-500 transition-colors">
-                            <span data-i18n="bio_link">Read full bio</span> <i class="fa-solid fa-arrow-right ms-2 rtl:rotate-180"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="history-panel" aria-labelledby="history-title">
+      <div class="section-title">
+        <h2 id="history-title">Recent activity</h2>
+        <button class="danger-button" id="clear-all" type="button">Reset</button>
+      </div>
+      <div id="transaction-list" class="transaction-list"></div>
+      <p id="empty-state" class="empty-state">No transactions yet. Add your first income or expense above.</p>
     </section>
+  </main>
 
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-20 bg-gray-50 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-sm font-bold tracking-wide text-brand-600 uppercase mb-2" data-i18n="test_pre">Success Stories</h2>
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-900" data-i18n="test_title">What Our Students Say</h3>
-            </div>
-            
-            <!-- Horizontal Scroll Container -->
-            <div class="flex overflow-x-auto space-x-6 pb-8 snap-x snap-mandatory hide-scrollbar">
-                
-                <!-- Review 1 -->
-                <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%] snap-center bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
-                    <div class="flex text-yellow-400 text-sm mb-4">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-900 mb-3" data-i18n="r1_title">"Finally confident in speaking!"</h4>
-                    <p class="text-gray-600 mb-6 flex-grow rtl:text-right" data-i18n="r1_desc">"I've studied English for years but never felt comfortable. After 3 months with EdPoint, I just landed a job in London!"</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="User" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <div class="font-bold text-gray-900 text-sm" data-i18n="r1_name">Elena R.</div>
-                            <div class="text-gray-500 text-xs" data-i18n="r1_loc">Madrid, Spain</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review 2 -->
-                <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%] snap-center bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
-                    <div class="flex text-yellow-400 text-sm mb-4">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-900 mb-3" data-i18n="r2_title">"Aced my SATs"</h4>
-                    <p class="text-gray-600 mb-6 flex-grow rtl:text-right" data-i18n="r2_desc">"The math prep was incredible. My tutor broke down complex problems into simple steps. My score went up 200 points."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="User" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <div class="font-bold text-gray-900 text-sm" data-i18n="r2_name">Michael C.</div>
-                            <div class="text-gray-500 text-xs" data-i18n="r2_loc">California, USA</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review 3 -->
-                <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%] snap-center bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
-                    <div class="flex text-yellow-400 text-sm mb-4">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <h4 class="text-lg font-bold text-gray-900 mb-3" data-i18n="r3_title">"Best investment for my career"</h4>
-                    <p class="text-gray-600 mb-6 flex-grow rtl:text-right" data-i18n="r3_desc">"Business English modules were exactly what I needed. I can now lead meetings with international clients effortlessly."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=100&q=80" alt="User" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <div class="font-bold text-gray-900 text-sm" data-i18n="r3_name">Kenji T.</div>
-                            <div class="text-gray-500 text-xs" data-i18n="r3_loc">Tokyo, Japan</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / CTA Section -->
-    <section id="contact" class="py-24 bg-white relative overflow-hidden">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6" data-i18n="cta_title">Ready to reach your potential?</h2>
-            <p class="text-xl text-gray-600 mb-10" data-i18n="cta_desc">Book a free 30-minute consultation. We'll assess your level, discuss your goals, and build a custom roadmap for you.</p>
-            
-            <form class="max-w-md mx-auto space-y-4 text-start bg-gray-50 p-6 rounded-2xl shadow-lg border border-gray-100" onsubmit="event.preventDefault(); alert('Thanks for booking! We will contact you shortly.');">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="form_email">Email Address</label>
-                    <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all" placeholder="you@example.com" data-i18n-placeholder="form_email_ph">
-                </div>
-                <div>
-                    <label for="goal" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="form_goal">Learning Goal</label>
-                    <select id="goal" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all">
-                        <option data-i18n="goal_1">General Improvement</option>
-                        <option data-i18n="goal_2">Exam Preparation</option>
-                        <option data-i18n="goal_3">Business/Career</option>
-                        <option data-i18n="goal_4">For my Child</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full py-4 bg-brand-600 text-white rounded-lg font-bold text-lg hover:bg-brand-700 transition-colors shadow-lg" data-i18n="form_btn">
-                    Book Free Trial
-                </button>
-                <p class="text-xs text-center text-gray-500 mt-4" data-i18n="form_note">No credit card required. Cancel anytime.</p>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4 text-white">
-                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
-                        <span class="font-bold text-xl" data-i18n="logo">EdPoint</span>
-                    </div>
-                    <p class="text-sm leading-relaxed max-w-xs" data-i18n="footer_desc">
-                        Empowering students worldwide with personalized education that builds confidence and delivers real results.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4" data-i18n="foot_explore">Explore</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#services" class="hover:text-white transition-colors" data-i18n="nav_services">Services</a></li>
-                        <li><a href="#about" class="hover:text-white transition-colors" data-i18n="foot_tutors">About Tutors</a></li>
-                        <li><a href="#testimonials" class="hover:text-white transition-colors" data-i18n="nav_stories">Success Stories</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors" data-i18n="foot_blog">Blog</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4" data-i18n="foot_legal">Legal</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white transition-colors" data-i18n="foot_privacy">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors" data-i18n="foot_terms">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors" data-i18n="foot_cookies">Cookie Settings</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs">
-                <p>&copy; 2025 EdPoint Education Services. All rights reserved.</p>
-                <div class="flex space-x-6 rtl:space-x-reverse mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
-                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
-                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script>
-        // Language Dictionary
-        const translations = {
-            en: {
-                logo: "EdPoint",
-                nav_services: "Services",
-                nav_about: "About",
-                nav_methodology: "Methodology",
-                nav_stories: "Stories",
-                nav_book: "Book a Free Trial",
-                hero_badge: "Accepting new students for Fall 2025",
-                hero_title_1: "Education Services",
-                hero_title_2: "You Trust.",
-                hero_desc: "Personalized online education designed for your goals. From exam prep to fluency, we make learning stick.",
-                hero_cta: "Start Free Trial",
-                hero_video: "Watch Video",
-                hero_trusted: "Trusted by 500+ students",
-                card_target: "Target Reached!",
-                card_rating: "Average student rating",
-                serv_pre: "Our Programs",
-                serv_title: "Tailored Lessons for Every Learner",
-                s1_title: "Conversational English",
-                s1_desc: "Live conversation practice focused on natural speaking, slang, and cultural nuances.",
-                s2_title: "Business Professional",
-                s2_desc: "Master presentations, negotiations, and formal email writing for the workplace.",
-                s3_title: "IELTS & SAT Prep",
-                s3_desc: "Rigorous test strategies, practice exams, and time management drills.",
-                s4_title: "K-12 Tutoring",
-                s4_desc: "Engaging math, science, and reading support for younger students.",
-                s5_title: "Academic Writing",
-                s5_desc: "Structured essay planning, research methods, and citation guides.",
-                s6_title: "Custom Plan",
-                s6_desc: "Don't see what you need? We'll build a curriculum just for you.",
-                s6_btn: "Contact Us",
-                learn_more: "Learn more",
-                meth_pre: "Why Choose EdPoint",
-                meth_title: "What Makes Our Tutoring Stand Out",
-                meth_desc: "We don't just teach subjects; we teach you how to learn. Our methodology is built on three core pillars: confidence, practicality, and personalization.",
-                feat1_title: "Student-Centered Approach",
-                feat1_desc: "Lessons are carefully tailored to meet your individual pace, interests, and learning style.",
-                feat2_title: "Active Recall & Practice",
-                feat2_desc: "We focus on speaking and doing, not just passive listening. Use what you learn immediately.",
-                feat3_title: "Measurable Progress",
-                feat3_desc: "Track your improvement with monthly reports and milestone check-ins.",
-                stat_exp: "Years Experience",
-                stat_lessons: "Lessons Taught",
-                stat_goal: "Goal Completion",
-                stat_access: "Resource Access",
-                bio_badge: "Meet Your Head Tutor",
-                bio_name: "Hi, I'm Sarah Jenkins.",
-                bio_desc: "I founded EdPoint with a simple mission: to make high-quality education accessible and engaging. With a Master's in Education and over a decade of teaching experience, I've helped students from 30+ countries achieve their academic dreams.",
-                bio_cert1: "TEFL Certified",
-                bio_cert2: "M.Ed. Harvard",
-                bio_link: "Read full bio",
-                test_pre: "Success Stories",
-                test_title: "What Our Students Say",
-                r1_title: "\"Finally confident in speaking!\"",
-                r1_desc: "\"I've studied English for years but never felt comfortable. After 3 months with EdPoint, I just landed a job in London!\"",
-                r1_name: "Elena R.",
-                r1_loc: "Madrid, Spain",
-                r2_title: "\"Aced my SATs\"",
-                r2_desc: "\"The math prep was incredible. My tutor broke down complex problems into simple steps. My score went up 200 points.\"",
-                r2_name: "Michael C.",
-                r2_loc: "California, USA",
-                r3_title: "\"Best investment for my career\"",
-                r3_desc: "\"Business English modules were exactly what I needed. I can now lead meetings with international clients effortlessly.\"",
-                r3_name: "Kenji T.",
-                r3_loc: "Tokyo, Japan",
-                cta_title: "Ready to reach your potential?",
-                cta_desc: "Book a free 30-minute consultation. We'll assess your level, discuss your goals, and build a custom roadmap for you.",
-                form_email: "Email Address",
-                form_email_ph: "you@example.com",
-                form_goal: "Learning Goal",
-                goal_1: "General Improvement",
-                goal_2: "Exam Preparation",
-                goal_3: "Business/Career",
-                goal_4: "For my Child",
-                form_btn: "Book Free Trial",
-                form_note: "No credit card required. Cancel anytime.",
-                footer_desc: "Empowering students worldwide with personalized education that builds confidence and delivers real results.",
-                foot_explore: "Explore",
-                foot_tutors: "About Tutors",
-                foot_blog: "Blog",
-                foot_legal: "Legal",
-                foot_privacy: "Privacy Policy",
-                foot_terms: "Terms of Service",
-                foot_cookies: "Cookie Settings"
-            },
-            ar: {
-                logo: "إدبوينت",
-                nav_services: "خدماتنا",
-                nav_about: "من نحن",
-                nav_methodology: "المنهجية",
-                nav_stories: "قصص نجاح",
-                nav_book: "احجز تجربة مجانية",
-                hero_badge: "نقبل طلاب جدد لخريف 2025",
-                hero_title_1: "خدمات تعليمية",
-                hero_title_2: "تثق بها.",
-                hero_desc: "تعليم مخصص عبر الإنترنت مصمم لأهدافك. من التحضير للامتحانات إلى الطلاقة في اللغة، نجعل التعلم ممتعاً وفعالاً.",
-                hero_cta: "ابدأ التجربة المجانية",
-                hero_video: "شاهد الفيديو",
-                hero_trusted: "موثوق به من قبل 500+ طالب",
-                card_target: "تم تحقيق الهدف!",
-                card_rating: "متوسط تقييم الطلاب",
-                serv_pre: "برامجنا",
-                serv_title: "دروس مخصصة لكل متعلم",
-                s1_title: "اللغة الإنجليزية للمحادثة",
-                s1_desc: "ممارسة محادثة حية تركز على التحدث الطبيعي، والمصطلحات الدارجة، والفروق الثقافية.",
-                s2_title: "الإنجليزية للأعمال",
-                s2_desc: "إتقان العروض التقديمية، والمفاوضات، وكتابة رسائل البريد الإلكتروني الرسمية لمكان العمل.",
-                s3_title: "التحضير لـ IELTS و SAT",
-                s3_desc: "استراتيجيات اختبار صارمة، امتحانات تدريبية، وتدريبات على إدارة الوقت.",
-                s4_title: "دروس تقوية للمدارس (K-12)",
-                s4_desc: "دعم جذاب في الرياضيات، والعلوم، والقراءة للطلاب الصغار.",
-                s5_title: "الكتابة الأكاديمية",
-                s5_desc: "تخطيط منظم للمقالات، وطرق البحث، وأدلة الاقتباس.",
-                s6_title: "خطة مخصصة",
-                s6_desc: "لا ترى ما تحتاجه؟ سنقوم ببناء منهج دراسي خصيصًا لك.",
-                s6_btn: "اتصل بنا",
-                learn_more: "المزيد",
-                meth_pre: "لماذا تختار إدبوينت",
-                meth_title: "ما الذي يميز تدريسنا",
-                meth_desc: "نحن لا نعلم المواد فقط؛ نحن نعلمك كيف تتعلم. منهجيتنا مبنية على ثلاث ركائز أساسية: الثقة، والعملية، والتخصيص.",
-                feat1_title: "نهج يركز على الطالب",
-                feat1_desc: "تم تصميم الدروس بعناية لتلبي وتيرتك الفردية، واهتماماتك، وأسلوب تعلمك.",
-                feat2_title: "الاستدعاء النشط والممارسة",
-                feat2_desc: "نحن نركز على التحدث والفعل، وليس فقط الاستماع السلبي. استخدم ما تعلمته فوراً.",
-                feat3_title: "تقدم قابل للقياس",
-                feat3_desc: "تتبع تحسنك بتقارير شهرية ومحطات تقييم.",
-                stat_exp: "سنوات خبرة",
-                stat_lessons: "درس تم تدريسه",
-                stat_goal: "إكمال الأهداف",
-                stat_access: "وصول للموارد",
-                bio_badge: "قابل معلمك الرئيسي",
-                bio_name: "مرحباً، أنا سارة جنكينز.",
-                bio_desc: "أسست إدبوينت بمهمة بسيطة: جعل التعليم عالي الجودة متاحاً وجذاباً. مع ماجستير في التعليم وأكثر من عشر سنوات من الخبرة في التدريس، ساعدت طلاباً من أكثر من 30 دولة على تحقيق أحلامهم الأكاديمية.",
-                bio_cert1: "معتمد TEFL",
-                bio_cert2: "ماجستير تعليم، هارفارد",
-                bio_link: "اقرأ السيرة الذاتية كاملة",
-                test_pre: "قصص نجاح",
-                test_title: "ماذا يقول طلابنا",
-                r1_title: "\"أخيراً واثقة من التحدث!\"",
-                r1_desc: "\"درست الإنجليزية لسنوات لكن لم أشعر بالراحة أبداً. بعد 3 أشهر مع إدبوينت، حصلت للتو على وظيفة في لندن!\"",
-                r1_name: "إيلينا ر.",
-                r1_loc: "مدريد، إسبانيا",
-                r2_title: "\"تفوقت في اختبارات SAT\"",
-                r2_desc: "\"كان التحضير للرياضيات لا يصدق. قام معلمي بتبسيط المسائل المعقدة إلى خطوات بسيطة. ارتفعت درجاتي 200 نقطة.\"",
-                r2_name: "مايكل س.",
-                r2_loc: "كاليفورنيا، أمريكا",
-                r3_title: "\"أفضل استثمار لمهنتي\"",
-                r3_desc: "\"كانت وحدات الإنجليزية للأعمال بالضبط ما احتجته. يمكنني الآن قيادة الاجتماعات مع عملاء دوليين دون عناء.\"",
-                r3_name: "كينجي ت.",
-                r3_loc: "طوكيو، اليابان",
-                cta_title: "هل أنت مستعد للوصول إلى إمكاناتك؟",
-                cta_desc: "احجز استشارة مجانية لمدة 30 دقيقة. سنقيم مستواك، ونناقش أهدافك، ونبني لك خارطة طريق مخصصة.",
-                form_email: "البريد الإلكتروني",
-                form_email_ph: "you@example.com",
-                form_goal: "هدف التعلم",
-                goal_1: "تحسين عام",
-                goal_2: "التحضير للامتحانات",
-                goal_3: "الأعمال/المسار المهني",
-                goal_4: "لطفلي",
-                form_btn: "احجز تجربة مجانية",
-                form_note: "لا يتطلب بطاقة ائتمان. إلغاء في أي وقت.",
-                footer_desc: "تمكين الطلاب في جميع أنحاء العالم بتعليم مخصص يبني الثقة ويحقق نتائج حقيقية.",
-                foot_explore: "استكشف",
-                foot_tutors: "عن المعلمين",
-                foot_blog: "المدونة",
-                foot_legal: "قانوني",
-                foot_privacy: "سياسة الخصوصية",
-                foot_terms: "شروط الخدمة",
-                foot_cookies: "إعدادات ملفات تعريف الارتباط"
-            }
-        };
-
-        // Language Toggle Logic
-        let currentLang = 'en';
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            updateContent();
-        }
-
-        function updateContent() {
-            // Update HTML Lang and Dir
-            document.documentElement.lang = currentLang;
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
-            // Update Fonts
-            if (currentLang === 'ar') {
-                document.body.classList.remove('font-sans');
-                document.body.classList.add('font-arabic');
-                document.getElementById('lang-label').textContent = "English";
-                document.getElementById('lang-label-mobile').textContent = "EN";
-            } else {
-                document.body.classList.remove('font-arabic');
-                document.body.classList.add('font-sans');
-                document.getElementById('lang-label').textContent = "العربية";
-                document.getElementById('lang-label-mobile').textContent = "AR";
-            }
-
-            // Update Text
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
-                    el.textContent = translations[currentLang][key];
-                }
-            });
-
-            // Update Placeholders
-            const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
-            placeholders.forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[currentLang][key]) {
-                    el.placeholder = translations[currentLang][key];
-                }
-            });
-        }
-
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // Sticky Navbar Transition
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 10) {
-                navbar.classList.add('shadow-sm');
-            } else {
-                navbar.classList.remove('shadow-sm');
-            }
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                menu.classList.add('hidden');
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Initialize (optional: check localStorage here later)
-        updateContent(); // Ensure default state is set correct
-        // Reset to English initially for display match
-        if(currentLang === 'en') {
-             document.getElementById('lang-label').textContent = "العربية";
-        }
-    </script>
+  <script src="app.js"></script>
 </body>
 </html>
